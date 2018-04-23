@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\..\include;H:\myOpenSource\SeetaFaceEngine-master\3rdparty\include;$(IncludePath)</IncludePath>
-    <LibraryPath>H:\myOpenSource\SeetaFaceEngine-master\3rdparty\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\include;..\..\..\3rdparty\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\3rdparty\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
