@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 {
   // Initialize face detection model
   seeta::FaceDetection detector("../../../FaceDetection/model/seeta_fd_frontal_v1.0.bin");
-  detector.SetMinFaceSize(40);
+  detector.SetMinFaceSize(70);
   detector.SetScoreThresh(2.f);
   detector.SetImagePyramidScaleFactor(0.8f);
   detector.SetWindowStep(4, 4);
@@ -62,13 +62,13 @@ int main(int argc, char** argv)
 
   //load image
   IplImage *img_grayscale = NULL;
-  img_grayscale = cvLoadImage((DATA_DIR + "image_0001.png").c_str(), 0);
+  img_grayscale = cvLoadImage((DATA_DIR + "0_1_2.jpg").c_str(), 0);
   if (img_grayscale == NULL)
   {
     return 0;
   }
 
-  IplImage *img_color = cvLoadImage((DATA_DIR + "image_0001.png").c_str(), 1);
+  IplImage *img_color = cvLoadImage((DATA_DIR + "0_1_2.jpg").c_str(), 1);
   int pts_num = 5;
   int im_width = img_grayscale->width;
   int im_height = img_grayscale->height;
@@ -100,16 +100,20 @@ int main(int argc, char** argv)
     return 0;
   }
 
-  // Detect 5 facial landmarks
-  seeta::FacialLandmark points[5];
-  point_detector.PointDetectLandmarks(image_data, faces[0], points);
-
-  // Visualize the results
-  cvRectangle(img_color, cvPoint(faces[0].bbox.x, faces[0].bbox.y), cvPoint(faces[0].bbox.x + faces[0].bbox.width - 1, faces[0].bbox.y + faces[0].bbox.height - 1), CV_RGB(255, 0, 0));
-  for (int i = 0; i<pts_num; i++)
+  for each (seeta::FaceInfo face in faces)
   {
-    cvCircle(img_color, cvPoint(points[i].x, points[i].y), 2, CV_RGB(0, 255, 0), CV_FILLED);
+	  // Detect 5 facial landmarks
+	  seeta::FacialLandmark points[5];
+	  point_detector.PointDetectLandmarks(image_data, face, points);
+
+	  // Visualize the results
+	  cvRectangle(img_color, cvPoint(face.bbox.x, face.bbox.y), cvPoint(face.bbox.x + face.bbox.width - 1, face.bbox.y + face.bbox.height - 1), CV_RGB(255, 0, 0));
+	  for (int i = 0; i<pts_num; i++)
+	  {
+		  cvCircle(img_color, cvPoint(points[i].x, points[i].y), 2, CV_RGB(0, 255, 0), CV_FILLED);
+	  }
   }
+
   cvSaveImage("result.jpg", img_color);
 
   // Release memory

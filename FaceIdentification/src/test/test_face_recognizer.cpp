@@ -376,7 +376,7 @@ void TEST(FaceRecognizerTest, CudaExtractFeatureWithCrop) {
 int main(int argc, char* argv[]) {
   //TEST(FaceRecognizerTest, CropFace);
   //TEST(FaceRecognizerTest, ExtractFeature);
-  //TEST(FaceRecognizerTest, ExtractFeatureWithCrop);
+  TEST(FaceRecognizerTest, ExtractFeatureWithCrop);
   setGMemAllocator(new GreedyMemManager());
   TEST(FaceRecognizerTest, CudaExtractFeatureWithCrop);
   return 0;

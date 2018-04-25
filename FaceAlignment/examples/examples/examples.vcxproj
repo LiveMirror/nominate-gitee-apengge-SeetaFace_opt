@@ -68,6 +68,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\include;..\..\..\3rdparty\include\opencv</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -79,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\..\..\FaceDetection\include;H:\myOpenSource\SeetaFaceEngine-master\3rdparty\include\opencv2;H:\myOpenSource\SeetaFaceEngine-master\3rdparty\include\opencv;H:\myOpenSource\SeetaFaceEngine-master\3rdparty\include\;..\..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>H:\myOpenSource\SeetaFaceEngine-master\3rdparty\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\..\FaceDetection\include;..\..\..\3rdparty\include\opencv2;..\..\..\3rdparty\include\opencv;..\..\..\3rdparty\include\;..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\3rdparty\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -88,7 +89,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;D_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
