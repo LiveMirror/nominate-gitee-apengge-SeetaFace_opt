@@ -71,8 +71,9 @@ int main(int argc, char** argv) {
   img_data.height = img_gray.rows;
   img_data.num_channels = 1;
 
-  long t0 = cv::getTickCount();
+
   std::vector<seeta::FaceInfo> faces;
+  long t0 = cv::getTickCount();
   for (int i = 0; i < 100; i++)
   {
 	  faces = detector.Detect(img_data);

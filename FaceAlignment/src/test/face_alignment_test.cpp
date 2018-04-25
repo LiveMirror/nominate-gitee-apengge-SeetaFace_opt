@@ -34,6 +34,7 @@
 #include <iostream>
 #include <string>
 
+#include "opencv.hpp"
 #include "cv.h"
 #include "highgui.h"
 
@@ -60,65 +61,56 @@ int main(int argc, char** argv)
   // Initialize face alignment model 
   seeta::FaceAlignment point_detector((MODEL_DIR + "seeta_fa_v1.1.bin").c_str());
 
-  //load image
-  IplImage *img_grayscale = NULL;
-  img_grayscale = cvLoadImage((DATA_DIR + "0_1_2.jpg").c_str(), 0);
-  if (img_grayscale == NULL)
-  {
-    return 0;
-  }
+  cv::Mat img = cv::imread((DATA_DIR + "0_1_2.jpg").c_str(), cv::IMREAD_UNCHANGED);
+  cv::Mat img_gray;
 
-  IplImage *img_color = cvLoadImage((DATA_DIR + "0_1_2.jpg").c_str(), 1);
-  int pts_num = 5;
-  int im_width = img_grayscale->width;
-  int im_height = img_grayscale->height;
-  unsigned char* data = new unsigned char[im_width * im_height];
-  unsigned char* data_ptr = data;
-  unsigned char* image_data_ptr = (unsigned char*)img_grayscale->imageData;
-  int h = 0;
-  for (h = 0; h < im_height; h++) {
-    memcpy(data_ptr, image_data_ptr, im_width);
-    data_ptr += im_width;
-    image_data_ptr += img_grayscale->widthStep;
-  }
+  if (img.channels() != 1)
+	  cv::cvtColor(img, img_gray, cv::COLOR_BGR2GRAY);
+  else
+	  img_gray = img;
 
-  seeta::ImageData image_data;
-  image_data.data = data;
-  image_data.width = im_width;
-  image_data.height = im_height;
-  image_data.num_channels = 1;
+  seeta::ImageData img_data;
+  img_data.data = img_gray.data;
+  img_data.width = img_gray.cols;
+  img_data.height = img_gray.rows;
+  img_data.num_channels = 1;
+
+
 
   // Detect faces
-  std::vector<seeta::FaceInfo> faces = detector.Detect(image_data);
+  std::vector<seeta::FaceInfo> faces = detector.Detect(img_data);
   int32_t face_num = static_cast<int32_t>(faces.size());
 
   if (face_num == 0)
   {
-    delete[]data;
-    cvReleaseImage(&img_grayscale);
-    cvReleaseImage(&img_color);
     return 0;
   }
 
-  for each (seeta::FaceInfo face in faces)
+  long t0 = cv::getTickCount();
+  for (int k = 0; k < 1000; k++)
   {
-	  // Detect 5 facial landmarks
-	  seeta::FacialLandmark points[5];
-	  point_detector.PointDetectLandmarks(image_data, face, points);
-
-	  // Visualize the results
-	  cvRectangle(img_color, cvPoint(face.bbox.x, face.bbox.y), cvPoint(face.bbox.x + face.bbox.width - 1, face.bbox.y + face.bbox.height - 1), CV_RGB(255, 0, 0));
-	  for (int i = 0; i<pts_num; i++)
+	  for each (seeta::FaceInfo face in faces)
 	  {
-		  cvCircle(img_color, cvPoint(points[i].x, points[i].y), 2, CV_RGB(0, 255, 0), CV_FILLED);
+		  // Detect 5 facial landmarks
+		  seeta::FacialLandmark points[5];
+		  point_detector.PointDetectLandmarks(img_data, face, points);
+
+		  // Visualize the results
+		  rectangle(img, cvPoint(face.bbox.x, face.bbox.y), cvPoint(face.bbox.x + face.bbox.width - 1, face.bbox.y + face.bbox.height - 1), CV_RGB(255, 0, 0));
+		  for (int i = 0; i<5; i++)
+		  {
+			  circle(img, cvPoint(points[i].x, points[i].y), 2, CV_RGB(0, 255, 0), CV_FILLED);
+		  }
 	  }
   }
 
-  cvSaveImage("result.jpg", img_color);
+  long t1 = cv::getTickCount();
+  double secs = (t1 - t0) / cv::getTickFrequency();
+  std::cout << "alignment takes " << secs / (faces.size() * 1000) << " seconds " << std::endl;
+  cv::namedWindow("Test", cv::WINDOW_AUTOSIZE);
+  cv::imshow("Test", img);
+  cv::waitKey(0);
+  cv::destroyAllWindows();
 
-  // Release memory
-  cvReleaseImage(&img_color);
-  cvReleaseImage(&img_grayscale);
-  delete[]data;
   return 0;
 }

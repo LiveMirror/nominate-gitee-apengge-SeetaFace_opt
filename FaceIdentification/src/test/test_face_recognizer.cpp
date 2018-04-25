@@ -35,6 +35,7 @@ using namespace std;
 #ifdef _WIN32
 #pragma once
 #include <opencv2/core/version.hpp>
+#include <opencv2/opencv.hpp>
 
 #define CV_VERSION_ID CVAUX_STR(CV_MAJOR_VERSION) CVAUX_STR(CV_MINOR_VERSION) \
   CVAUX_STR(CV_SUBMINOR_VERSION)
