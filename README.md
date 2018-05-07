@@ -13,7 +13,8 @@
 3:SeetaFace Identification,人脸识别,输入图片以及5点坐标,返回2048维特征.还提供了两个2048维特征比对相似度的接口.  
 4:QFacer,QT使用上面的库,实现了图片入库,1:1比对,1:N比对3个展示功能.  
 
-
+![1比1](https://gitee.com/apengge/SeetaFace_opt/raw/master/QFacer/images/1VS1.png)
+![1比N](https://gitee.com/apengge/SeetaFace_opt/raw/master/QFacer/images/top5.png)
 
 #### 优化记录
 1:2018-4-23  
