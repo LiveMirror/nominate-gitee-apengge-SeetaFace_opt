@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/new/img">
+        <file>images/moon.png</file>
+        <file>images/uploadImg.jpg</file>
+    </qresource>
+</RCC>
