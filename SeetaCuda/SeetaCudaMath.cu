@@ -202,6 +202,7 @@ void SeetaCudaMath::AnkMutBkm(int cudaDevice, const float* A, const float* B, fl
 
 	cudaThreadSynchronize();
 	cudaMemcpy(C, dev_c, m * n * sizeof(float), cudaMemcpyDeviceToHost);
+	cublasDestroy(handle);
 	cudaFree(dev_a);
 	cudaFree(dev_b);
 	cudaFree(dev_c);
@@ -229,6 +230,7 @@ void SeetaCudaMath::AnkMutTBmk(int cudaDevice, const float* A, const float* B, f
 	cublasSgemm(handle, CUBLAS_OP_T, CUBLAS_OP_N, m, n, k, &alpha, dev_b, k, dev_a, k, &beta, dev_c, m);
 	cudaThreadSynchronize();
 	cudaMemcpy(C, dev_c, m * n * sizeof(float), cudaMemcpyDeviceToHost);
+	cublasDestroy(handle);
 	cudaFree(dev_a);
 	cudaFree(dev_b);
 	cudaFree(dev_c);
